@@ -2,7 +2,7 @@
 """Module containing auth class"""
 
 
-from flask import request, Request
+from flask import request
 from typing import Tuple, TypeVar
 from api.v1.auth.auth import Auth
 from base64 import b64decode
@@ -18,7 +18,7 @@ class BasicAuth(Auth):
         """gets bas64 authorization from header"""
         if not authorization_header\
                 or not isinstance(authorization_header, str)\
-        or not authorization_header.startswith("Basic "):
+            or not authorization_header.startswith("Basic "):
             return None
         return authorization_header.split(" ")[1]
 
@@ -33,7 +33,7 @@ class BasicAuth(Auth):
         except Exception:
             return None
 
-    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> Tuple[str, str]:
+    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> (str, str):
         """extracts user credentials"""
         cred = decoded_base64_authorization_header
         if not cred or not isinstance(cred, str) or not ":" in cred:
@@ -58,7 +58,7 @@ class BasicAuth(Auth):
         except Exception:
             return None
 
-    def current_user(self, request: Request = None) -> TypeVar('User'):
+    def current_user(self, request=None) -> TypeVar('User'):
         """gets current user"""
         authorisation = self.authorization_header(request)
         basic = self.extract_base64_authorization_header(authorisation)
