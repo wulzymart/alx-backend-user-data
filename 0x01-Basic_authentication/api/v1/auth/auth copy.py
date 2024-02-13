@@ -14,7 +14,7 @@ class Auth:
         list of strings excluded_paths"""
         if not path:
             return True
-        if not excluded_paths or excluded_paths == []:
+        if:
             return True
         for p in excluded_paths:
             if path == p or (not path.endswith("/") and (path + "/") == p):

@@ -9,36 +9,25 @@ from flask import request
 
 
 class Auth:
-    """_summary_
+    """base class for different authenticaton
     """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """_summary_
-
-        Args:
-                path (str): _description_
-                excluded_paths (List[str]): _description_
-
-        Returns:
-                bool: _description_
         """
-        if path is None:
-            return True
-
-        if excluded_paths is None or excluded_paths == []:
+        returns True if the path is not in the
+        list of strings excluded_paths
+        """
+        if not path or not excluded_paths or excluded_paths == []:
             return True
 
         if path in excluded_paths:
             return False
 
-        for excluded_path in excluded_paths:
-            if excluded_path.startswith(path):
+        for p in excluded_paths:
+            if p.startswith(path) or path.startswith(p):
                 return False
-            elif path.startswith(excluded_path):
+            if p.endswith("*") and path.startswith(p[:-1]):
                 return False
-            elif excluded_path[-1] == "*":
-                if path.startswith(excluded_path[:-1]):
-                    return False
 
         return True
 
