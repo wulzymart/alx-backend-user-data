@@ -22,6 +22,12 @@ if AUTH_TYPE == "basic_auth":
 if AUTH_TYPE == "session_auth":
     from api.v1.auth.session_auth import SessionAuth
     auth = SessionAuth()
+if AUTH_TYPE == "session_exp_auth":
+    from api.v1.auth.session_exp_auth import SessionExpAuth
+    auth = SessionExpAuth()
+if AUTH_TYPE == "session_db_auth":
+    from api.v1.auth.session_db_auth import SessionDBAuth
+    auth = SessionDBAuth()
 if AUTH_TYPE == "auth":
     from api.v1.auth.auth import Auth
     auth = Auth()
@@ -32,7 +38,8 @@ def handle_before_request():
     """filters the requests for authentication"""
     if auth:
         excluded = ['/api/v1/status/',
-                    '/api/v1/unauthorized/', '/api/v1/forbidden/']
+                    '/api/v1/unauthorized/', '/api/v1/forbidden/',
+                    '/api/v1/auth_session/login/']
         if auth.require_auth(request.path, excluded):
             if not auth.authorization_header(request):
                 abort(401)
