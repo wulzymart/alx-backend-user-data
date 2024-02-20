@@ -42,6 +42,7 @@ def login() -> str:
         response.set_cookie('session_id', session_id)
     return response
 
+
 @app.route('/sessions', methods=['DELETE'])
 def logout() -> str:
     """logout and delete session"""
@@ -61,6 +62,7 @@ def profile() -> str:
     if not user:
         abort(403)
     return jsonify({"email": user.email}), 200
+
 
 @app.route('/reset_password', methods=['POST'])
 def get_reset_password_token() -> str:
